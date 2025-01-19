@@ -1,30 +1,19 @@
 # https://www.codewars.com/kata/58e6996019af2cff71000081
 #
 #
-from collections import deque
 import pdb
-from pprint import pprint
 
 
 def ant(grid, col, row, n, dir=0):
     gr = grid.copy()
-    # dirs = deque([0, 1, 2, 3])
     dirs = [0, 1, 2, 3]
-    # breakpoint()
     if dir is not None:
         for i in range(dir):
-            # dirs.append(dirs.popleft())
-            print(dirs[1:])
-            # dirs = dirs[1:] + dirs[0]
             dirs.append(dirs.pop(0))
     for move in range(n):
         if gr[row][col]:
-            # dirs.append(dirs.popleft())
-            # dirs = dirs[1:].append(dirs[0])
             dirs.append(dirs.pop(0))
         else:
-            # dirs.appendleft(dirs.pop())
-            # dirs = dirs[-1].append(dirs[1:])
             dirs.insert(0, dirs.pop())
         gr[row][col] = int(not gr[row][col])
         match dirs[0]:
