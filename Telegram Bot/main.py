@@ -1,9 +1,12 @@
 from typing import Final
 from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import (
+        Application, CommandHandler, MessageHandler, filters, ContextTypes
+)
 
 TOKEN: Final = '6541200544:AAEkAcuhG9g6K6Ad-wxR-c9Rt6X5GLrmgO4'
 BOT_USERNAME: Final = '@champ_champ_bot'
+
 
 # Commands
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -28,6 +31,7 @@ def handle_response(text: str) -> str:
     if 'how are you?' in processed_text:
         return 'I am good!'
     return "i don't understand you..."
+
 
 async def handle_massage(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_type: str = update.message.chat.type
