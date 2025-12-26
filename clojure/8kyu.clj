@@ -176,3 +176,18 @@
        (s/join " ")))
 
 (reverse-words1 words)
+
+(def n 2)
+(defn even-or-odd [n]
+  (if (even? n) "even" "odd"))
+(even-or-odd n)
+
+(def s "Hello")
+(def n 5)
+;; (defn s-r [n s]
+;;   (reduce str (for [x (range 1 n)] s)))
+(defn s-r [n s]
+  (->> s
+       (for [i (range n)])
+       (reduce str)))
+(s-r n s)
