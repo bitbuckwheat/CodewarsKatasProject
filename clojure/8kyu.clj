@@ -1,4 +1,5 @@
-(ns clojure.core)
+(ns clojure.core
+  (:require [clojure.string :as s]))
 
 (def v [\a \b \c])
 (defn myfunc [v]
@@ -128,3 +129,50 @@
 (star-sort arr)
 
 (count "test")
+
+
+(def words "yoda doesn't speak like this")
+(def words1 "Hello world!")
+;; (defn reverce-words [words]
+;;   (-> words
+;;     (string/split #" ")))
+
+;; (defn reverce-words [words]
+;;   (reverse (string/split words #" ")))
+
+;; (defn reverse-words [words]
+;;   (-> words
+;;     (string/split #" ")
+;;     reverse))
+
+(defn reverse-words [words]
+  (string/join " " (reverse (string/split words #" "))))
+(reverse-words words1)
+
+;; and shorter version, need to alias clojure.string as s
+(defn reverse-words [ws]
+  (s/join " " (reverse (s/split ws #" "))))
+
+;; someone's solution
+;; (ns kata
+;;  (:require [clojure.string :refer [joi]]))n split
+
+;;(defn reverse-words [words]
+;;  (join " " (rseq (split words #" "))))
+
+;; and my adaptation
+;; (ns kata
+;;   (:require [clojure.string :refer [join split]]))
+;;
+;; (defn reverse-words [ws]
+;;   (join " " (reverse (split ws #" "))))
+;;
+;; (ns kata
+;;   (require [clojure.string :as s]))
+
+(defn reverse-words1 [ws]
+  (->> (s/split ws #" ")
+       reverse
+       (s/join " ")))
+
+(reverse-words1 words)
