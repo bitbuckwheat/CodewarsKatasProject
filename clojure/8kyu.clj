@@ -191,3 +191,87 @@
        (for [i (range n)])
        (reduce str)))
 (s-r n s)
+
+
+
+;; (defn recursive-reverse [coll]
+;;   (let [acc ["empty"]]
+;;     (if (empty? coll)
+;;       acc
+;;       (comp 
+;;         (cons (first coll) acc)
+;;         (recur (rest coll))))))
+            ;; (cons (first coll) acc))))))
+
+(defn recursive-reverse [coll]
+  (letfn [(rev-helper [original-list accumulator]
+            (if (empty? original-list)
+              accumulator ; Base case: return the built-up accumulator
+              (rev-helper (rest original-list) ; Recurse on the tail
+                          (cons (first original-list) accumulator))))] ; Add current item to front of accumulator
+    (rev-helper coll []))) ; Start with empty accumulator
+
+(recursive-reverse [2 3 4 5 6])
+;; (recursive-reverse [])
+;;
+
+(defn factorial [n]
+  (if (= n 0)
+    1
+    (* n (factorial (dec n)))))
+
+(factorial 100003N)
+
+
+;; (def n 104500)
+
+;; (defn no-boring-zeros [n]
+;;   (->> n
+;;     str
+;;     (filter #(not= \0 %))
+;;     (reduce str)
+;;     Integer/parseInt))
+
+(no-boring-zeros n)
+(Integer/parseInt (reduce str (filter #(not= \0 %) (str n))))
+
+(int "146")
+(Integer/parseInt "126")
+
+;; working and passing tests
+(def n 10004700)
+;; (defn no-boring-zeros [n]
+;;   (let [s (str n)]
+;;     (if (and (= (last s) \0) (> (count s) 1))
+;;       (no-boring-zeros (reduce str (butlast s)))
+;;       (Integer/parseInt s))))
+
+;; (defn no-boring-zeros [n]
+;;   (if (< n 10) n
+;;     (if (= (last (str n)) \0)
+;;       (no-boring-zeros (/ n 10))
+;;       n)))
+
+;; passes the test with Math/abs
+;; recursive call can be exchanged wih recur keyword (after Codewars soltions observation)
+(defn no-boring-zeros [n]
+  (cond
+   (< (Math/abs n) 10) n
+   (not= (last (str n)) \0) n
+   :else (no-boring-zeros (/ n 10))))
+
+    ;; (if (and (= (last (str n)) \0) (> (count (str n)) 1))
+    ;;   (no-boring-zeros (/ n 10))
+    ;;   n)))
+
+(no-boring-zeros n)
+(use clojure.string)
+(ends-with? "teststring" "ng")
+
+(/ 4100 10)
+
+(butlast "last")
+(reduce str (butlast "last"))
+
+(last "test")
+(count "test")
