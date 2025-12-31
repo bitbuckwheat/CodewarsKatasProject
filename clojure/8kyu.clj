@@ -306,3 +306,34 @@
 (rem year2 100) ; 5
 (quot year3 100) ; 0
 (rem year3 100) ; 5
+
+
+(def s "Hi! Hi!")
+(def s1 "Hi!\nHi")
+(def s2 "!!!!")
+;; passed all the tests
+;; (defn remove-bang [s]
+;;   (str (reduce str (filter #(not= % \!) s)) "!"))
+  ;; (str (apply str (filter #(not= % \!) s)) "!"))
+
+;; also passes the tests
+(defn remove-bang [s]
+  (str (s/replace s "!" "") "!"))
+
+(remove-bang s2)
+(str (reduce str (filter #(not= % \!) s)) "!")
+
+(def sg " test ")
+(defn do-trimming [string]
+  (.trim string))
+(do-trimming sg)
+(def var 43.5)
+;; работает, потому что round - это статический метод класса
+(Math/round var)
+;; не работает, потому что это не метод инстанса, round - это метод класса
+(.round var)
+(round var)
+(.equals 10 10)
+(.hashCode 20)
+(.byteValue 44)
+(.floatValue 86)
