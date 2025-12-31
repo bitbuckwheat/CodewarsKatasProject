@@ -275,3 +275,34 @@
 
 (last "test")
 (count "test")
+
+
+(def year1 1705)
+(def year2 705)
+(def year3 5)
+(def year4 1701)
+(def year5 1700)
+(def year6 0)
+(def year7 1)
+(defn century [year]
+  (let [res (quot year 100)]
+    (if (zero? (rem year 100))
+      res
+      (inc res))))
+
+;; a bit clever form
+(defn cent [year]
+  (let [res {0 0}]
+    (+ (quot year 100)
+       (get res (rem year 100) 1))))
+
+(century year7)
+(cent year1)
+
+(Integer/parseInt "05")
+(quot year1 100) ; 17
+(rem year1 100) ; 5
+(quot year2 100) ; 7
+(rem year2 100) ; 5
+(quot year3 100) ; 0
+(rem year3 100) ; 5
