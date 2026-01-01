@@ -476,3 +476,43 @@
 ;;
 ;; 2. Зачем здесь (?!^)?
 ;; Оно защищает строку от полного удаления, если она состоит только из одного нуля.
+;;
+
+
+(def s "1 2 -3")
+(def s1 "-1 -2 3")
+(def s2 "8 3 -5 42 -1 0 0 -9 4 7 4 -4")
+
+;; (defn high-and-low [s]
+;;   (let [nums (map #(Integer/parseInt %) (clojure.string/split s #" "))]
+;;     (str (apply max nums) " " (apply min nums))))
+
+;; someone's solution - don't understand it acutally
+(defn high-and-low [s]
+  (let [x (read-string (str "[" s "]"))]
+    (str (apply max x) " " (apply min x))))
+
+(= "3 1" (high-and-low "1 2 3"))
+(= "3 -2" (high-and-low "-1 -2 3"))
+(= "42 -9" (high-and-low "8 3 -5 42 -1 0 0 -9 4 7 4 -4"))
+
+
+(defn sorted-and-how? [sq]
+  (cond
+    (and (not= sq (sort > sq)) (not= sq (sort < sq))) "no"
+    (< (first sq) (last sq)) "yes, ascending"
+    (> (first sq) (last sq)) "yes, descending"))
+
+;;the solution i liked
+;; (defn sorted-and-how? [sq]
+;;   (cond
+;;     (= sq (sort sq)) "yes, ascending"
+;;     (= sq (sort > sq)) "yes, descending"
+;;     :else "no"))
+
+(= (sorted-and-how? [1 2]) "yes, ascending")
+(= (sorted-and-how? [15 7 3 -8]) "yes, descending")
+(= (sorted-and-how? [4 2 30]) "no")
+
+(first [15 7 3 -8])
+(sort < [4 2 30])
