@@ -516,3 +516,24 @@
 
 (first [15 7 3 -8])
 (sort < [4 2 30])
+
+(def s "Joe had a bad day")
+
+(defn kiss? [s]
+  (let [words (clojure.string/split s #" ")
+        longest-word (apply max (map count words))
+        s-len (count words)]
+    ;; (if (= '() (filter #(> (count %) (count words)) words)))
+    (if (<= longest-word s-len)
+      "Good work Joe!"
+      "Keep It Simple Stupid")))
+
+(filter #(count %) ["Joe" "had" "a"])
+(apply max (map count ["joe" "had" "a"]))
+
+  ;; (count (clojure.string/split s #" ")))
+
+(= (kiss? "Joe had a bad day") "Good work Joe!")
+(= (kiss? "Joe had some bad days") "Good work Joe!")
+(= (kiss? "Joe is having no fun") "Keep It Simple Stupid")
+(= (kiss? "Sometimes Joe cries for hours") "Keep It Simple Stupid")
