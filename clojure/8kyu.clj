@@ -337,3 +337,142 @@
 (.hashCode 20)
 (.byteValue 44)
 (.floatValue 86)
+
+(-> "  hello   "
+    clojure.string/trim
+    clojure.string/upper-case)
+
+(clojure.java.browse/browse-url "/bin/bash")
+(clojure.java.browse/browse-url "http://clojuredocs.org")
+
+(clojure.string/ends-with? "104700" "0")
+
+(def nums "104800")
+(if (clojure.string/ends-with? nums "0")
+  (clojure.string/replace nums "0" "")
+  nums)
+
+(-> nums
+    reverse
+    Integer/parseInt)
+
+(Integer/parseInt (clojure.string/reverse (str (Integer/parseInt (clojure.string/reverse nums)))))
+
+;; (def rev-and-int
+;;   (comp
+;;     Integer/parseInt
+;;     clojure.string/reverse))
+
+(def example-transducer
+  (map inc))
+
+(def transforms
+  (comp
+    (map inc)
+    (filter even?)))
+
+;; (def rev-and-int
+;;   (comp
+;;     clojure.string/upper-case
+;;     clojure.string/reverse))
+
+(def rev-and-int
+  (comp #(Integer/parseInt %) clojure.string/reverse))
+
+(-> nums
+  clojure.string/reverse
+  Integer/parseInt
+  str
+  clojure.string/reverse
+  Integer/parseInt)
+
+(-> nums
+    rev-and-int
+    str
+    rev-and-int)
+
+
+(def rev-int
+  (comp
+    #(Integer/parseInt %)
+    clojure.string/reverse
+    str))
+
+(def nn -1049000)
+;; (defn no-boring-zero [nn]
+;;   (if (pos? n)
+;;     (-> n rev-int rev-int)
+;;     (-> n (* -1) rev-int rev-int (* -1))))
+
+(defn no-boring-zero [nn]
+  (if (pos? nn)
+    (nth (iterate rev-int nn) 2)
+    ;; (-> nn
+    ;;   (iterate rev-int)
+    ;;   (nth 2))
+    (-> nn
+        (* -1)
+        (nth (iterate rev-int nn) 2)
+        (* -1))))
+
+(no-boring-zero nn)
+
+;; что-то бинарное
+(Integer/reverse 101) ; -1509949440
+
+(def number -2)
+(->> (- number)
+     (* 2))
+
+
+;; 2 short helper funcs, passes the tests
+(def rev-int
+  (comp
+    #(Integer/parseInt %)
+    clojure.string/reverse
+    str))
+
+;;(defn two-times [f n]
+  ;;(nth (iterate f n) 2))
+
+(defn two-times [f n]
+  (-> n f f))
+
+(defn no-boring-zeros [n]
+  (if (pos? n)
+    (->> n
+      (two-times rev-int))
+    (->> (- n)
+      (two-times rev-int)
+      -)))
+
+
+;; previous option variation, passes the tests
+(defn rev-int [n]
+  (let [f (comp
+            #(Integer/parseInt %)
+            clojure.string/reverse
+            str)]
+    (-> n f f)))
+
+(defn no-boring-zeros [n]
+  (if (pos? n)
+    (rev-int n)
+    (- (rev-int (- n)))))
+
+;; and a cool colution from Codewars with regexp
+(defn no-boring-zeros [n]
+  (Integer/parseInt (clojure.string/replace (str n) #"(?!^)[0]+$" "")))
+;; 1. Что означают символы?
+;;
+;;     #"" — литерал регулярного выражения в Clojure.
+;;     (?!^) — это Negative Lookahead (отрицательная опережающая проверка).
+;;     Она говорит: «Найди совпадение только если оно находится не в самом начале строки».
+;;         ? — начать проверку.
+;;         ! — отрицание (не должно соответствовать).
+;;         ^ — начало строки.
+;;     [0]+ — один или более нулей.
+;;     $ — конец строки.
+;;
+;; 2. Зачем здесь (?!^)?
+;; Оно защищает строку от полного удаления, если она состоит только из одного нуля.
