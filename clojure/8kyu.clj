@@ -537,3 +537,15 @@
 (= (kiss? "Joe had some bad days") "Good work Joe!")
 (= (kiss? "Joe is having no fun") "Keep It Simple Stupid")
 (= (kiss? "Sometimes Joe cries for hours") "Keep It Simple Stupid")
+
+
+(def s "Lets go to the movies")
+
+(defn vaporcode [s]
+  (clojure.string/join "  " (clojure.string/upper-case (clojure.string/replace s " " ""))))
+
+  ;; in this case you need to add "(:require [clojure.string :refer [join replace upper-case]]))"
+  ;; (join "  " (upper-case (replace s " " ""))))
+
+(= (vaporcode "Lets go to the movies") "L  E  T  S  G  O  T  O  T  H  E  M  O  V  I  E  S")
+(= (vaporcode "Why isn't my code working?") "W  H  Y  I  S  N  '  T  M  Y  C  O  D  E  W  O  R  K  I  N  G  ?")
