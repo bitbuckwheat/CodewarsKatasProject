@@ -549,3 +549,54 @@
 
 (= (vaporcode "Lets go to the movies") "L  E  T  S  G  O  T  O  T  H  E  M  O  V  I  E  S")
 (= (vaporcode "Why isn't my code working?") "W  H  Y  I  S  N  '  T  M  Y  C  O  D  E  W  O  R  K  I  N  G  ?")
+
+
+
+(def word "aabbcc")
+
+(defn validate-word [word]
+  (->> word
+      clojure.string/lower-case
+      (group-by (fn [x] x))
+      vals
+      (map count)
+      (apply =)))
+  ;; (apply = (map count (vals (group-by (fn [x] x) (clojure.string/lower-case word))))))
+
+;; similar to my solution,but with "frequencies" func
+;; (defn validate-word
+;;   [word]
+;;   (->> word
+;;        (clojure.string/lower-case)
+;;        (frequencies)
+;;        (map last)
+;;        (apply =)))
+
+;; and one more sulution, wih "into" func
+;; (:require [clojure.string :as str])
+;; (defn validate-word [s]
+;;     (let [s2 (str/lower-case s)]
+;;       (= 1 (count (into #{} (map second (frequencies s2)))))))
+
+(validate-word word)
+
+(vec word)
+(group-by set (vec word))
+(group-by (fn [x] x) (vec word))
+(apply = (map count (vals (group-by (fn [x] x) word))))
+(type [1 2 3])
+(count (set word))
+(count word)
+(count)
+(if (= 0 (rem (count word) (count (set word))))
+  true
+  false)
+
+(= (validate-word "aaabbc"), false)
+(= (validate-word "abcabc"), true)
+(= (validate-word "abc123"), true)
+(= (validate-word "abcabcd"), false)
+(= (validate-word "abc!abc!"), true)
+(= (validate-word "abc!abc"), false)
+
+
