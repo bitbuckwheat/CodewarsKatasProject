@@ -49,3 +49,61 @@
 (= (repeats [5,17,18,11,13,18,11,13]) 22)
 (= (repeats [5,10,19,13,10,13]) 24)
 
+;; ==================================================
+;; https://www.codewars.com/kata/5680781b6b7c2be860000036
+
+
+;; (def word "super")
+(def word "SuPEr HerO")
+(defn vowel? [letter]
+  (.contains "aeiouyAEIOUY" letter))
+
+;; one-liner, working and passes the tests
+;; (defn vowel-indices [word]
+;;   (vec (map inc (keys (sort (apply merge (filter #(vowel? (str (val (first %)))) (map-indexed hash-map word))))))))
+
+;; threaded, working and passes the tests
+(defn vowel-indices [word]
+  (->> (map-indexed hash-map word)
+       (filter #(vowel? (str (val (first %)))))
+       (apply merge)
+       sort
+       keys
+       (map inc)
+       vec))
+
+;; interesting short sulution
+;; (def vowel? (into #{} "aeiouyAEIOUY"))
+;;
+;; (defn vowel-indices [word]
+;;   (->> word
+;;        (map-indexed (fn [i c] {:i (inc i) :c c}))
+;;        (filter #(-> % :c vowel?))
+;;        (map :i)))
+
+
+(.contains "aeiouyAEIOUY" "B")
+(vec "aeiouyAEIOUY") ; [\a \e \i \o \u \y \A \E \I \O \U \Y]
+(vowel? "a")
+(clojure.string/upper-case "aeiouy") ; "AEIOUY"
+(map-indexed vector word) ; ([0 \s] [1 \u] [2 \p] [3 \e] [4 \r])
+(map-indexed hash-map word) ; ({0 \s} {1 \u} {2 \p} {3 \e} {4 \r})
+(map #(str (val (first %))) (map-indexed hash-map word))
+(filter #(vowel? (val (first %)) (map-indexed vector word)))
+(filter #(vowel? (str (val (first %)))) (map-indexed hash-map word))
+(map keys (filter #(vowel? (str (val (first %)))) (map-indexed hash-map word))) ; ((1) (3))
+(apply merge (filter #(vowel? (str (val (first %)))) (map-indexed hash-map word))) ; {1 \u, 3 \e}
+(vec (map inc (keys 
+                (sort 
+                  (apply merge (filter
+                                     #(vowel? (str (val (first %))))
+                                     (map-indexed hash-map word)))))))
+
+(str \b) ; "b"
+(val (first {2 \s})) ; \s
+
+(= (vowel-indices "super") [2,4])
+(= (vowel-indices "SuPEr") [2,4])
+(= (vowel-indices "SuPEr HerO") [2,4,8,10])
+
+;; ==========================================================================
