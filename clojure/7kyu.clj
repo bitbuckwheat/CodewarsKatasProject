@@ -81,6 +81,12 @@
 ;;        (filter #(-> % :c vowel?))
 ;;        (map :i)))
 
+;; and even shorter and elegant solution
+;; (def vowels #{\a \A \e \E \i \I \o \O \u \U \y \Y})
+;; (defn vowel-indices
+;;   [word]
+;;   (keep-indexed #(when (vowels %2) (inc %1)) word))
+
 
 (.contains "aeiouyAEIOUY" "B")
 (vec "aeiouyAEIOUY") ; [\a \e \i \o \u \y \A \E \I \O \U \Y]
@@ -107,3 +113,77 @@
 (= (vowel-indices "SuPEr HerO") [2,4,8,10])
 
 ;; ==========================================================================
+;; https://www.codewars.com/kata/6129095b201d6b000e5a33f0
+;; get back next time
+
+(defn f [x y z]
+    0)
+
+
+(= 20 (f 2 1 1))
+(= 46 (f 1 2 3))
+(= 54 (f 2 2 2))
+
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/54592a5052756d5c5d0009c3
+
+
+(defn head [coll]
+  (first coll))
+
+(defn tail [coll]
+  (rest coll))
+
+(defn init [coll]
+  (take (- (count coll) 1) coll))
+
+(defn last_ [coll]
+  (last coll))
+
+;; interestinly, it can be done with just defs
+;; and there is drop-last func also
+;; (def head first)
+;; (def tail rest)
+;; (def init drop-last)
+;; (def last_ last)
+
+(= (head [5 1]) 5)
+(= (tail [1]) [])
+(= (init [1 5 7 9]) [1 5 7])
+(= (last_ [7 2]) 2)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/56e7d40129035aed6c000632/
+;; get back next time
+
+(def n [3])
+
+(defn create-lines [n]
+  (let [triangle {1 [1] 2 [1 1]}]
+    (assoc triangle n (cons))))
+(defn easy-line [n])
+
+(= (easy-line 7) 3432N)
+(= (easy-line 13) 10400600N)
+(= (easy-line 17) 2333606220N)
+(= (easy-line 19) 35345263800N)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/542f0c36d002f8cd8a0005e5
+;; get back next time
+
+(def n 10)
+
+(defn last-chair [n]
+  (let [p 1 chairs {}]
+    (if (> p n)
+      (get chairs (dec p))
+      (do))))
+
+
+(last-chair n)
+(= (last-chair 10) 9)
+
+(def chairs (assoc {} (range 1 11) nil))
+(println chairs)
