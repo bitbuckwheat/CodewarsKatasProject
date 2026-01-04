@@ -769,3 +769,31 @@
 (= (string-to-number "1405") 1405)
 (= (string-to-number "-7") -7)
 
+;; ==========================================================================
+;; https://www.codewars.com/kata/5772da22b89313a4d50012f7
+
+(defn greet [name_ owner]
+  (if (= owner name_)
+   "Hello boss"
+   "Hello guest"))
+
+(= (greet "Daniel" "Daniel") "Hello boss")
+(= (greet "Greg" "Daniel") "Hello guest")
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/5b4e779c578c6a898e0005c5/
+
+(defn draw-stairs [n]
+  (loop [stairs "" counter 0]
+    (if (= counter n)
+      (clojure.string/trimr stairs)
+      (recur (str stairs
+                  (apply str (repeat counter " "))
+                  "I\n")
+             (inc counter)))))
+
+(draw-stairs 3) ; "I\n I\n  I\n"
+(repeat 4 " ")
+
+(= (draw-stairs 3) "I\n I\n  I")
+(= (draw-stairs 5) "I\n I\n  I\n   I\n    I")
