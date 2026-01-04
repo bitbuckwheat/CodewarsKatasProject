@@ -171,21 +171,23 @@
                         (conj row 0)
                         (recur (+' 1 num)
                                (conj row
-                                     (+
-                                       (nth (get tri (-' counter 1)) num)
-                                       (nth (get tri (-' counter 1)) (+' 1 num))))))))))))
+                                    (+
+                                      (nth (get tri (-' counter 1))
+                                           num)
+                                      (nth (get tri (-' counter 1))
+                                           (+' 1 num))))))))))))
 
 (defn easy-line [n]
   (reduce +' (create-lines n)))
-
-(easy-line 50)
 (create-lines 4) ; {1 [1 0], 2 [1 1 0], 3 [1 2 1 0], 4 [1 3 3 1 0]}
-(create-lines 2) ; (1 16 25 4 0)
-(create-lines 5) ; {1 [1 0], 2 [1 1 0], 3 [1 2 1 0], 4 [1 3 3 1 0], 5 [1 4 6 4 1 0]}
-(create-lines 5) ; [1 4 6 4 1 0]
-(create-lines 7)
-(def trig {1 [1] 2 [1 1]})
-(nth (get trig 2) 0)
+#_(create-lines 2) ; (1 16 25 4 0)
+
+(comment
+ (create-lines 5) ; {1 [1 0], 2 [1 1 0], 3 [1 2 1 0], 4 [1 3 3 1 0], 5 [1 4 6 4 1 0]}
+ (create-lines 5) ; [1 4 6 4 1 0]
+ (create-lines 7)
+ (def trig {1 [1] 2 [1 1]})
+ (nth (get trig 2) 0))
 
 (= (easy-line 7) 3432N)
 (= (easy-line 13) 10400600N)
