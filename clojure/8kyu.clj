@@ -676,16 +676,96 @@
 ;; ==========================================================================
 ;; https://www.codewars.com/kata/56a946cd7bd95ccab2000055
 
-(defn lowercase_count[strng]
-  (count (re-seq #"[a-z]" strng)))
+;; (defn lowercase_count[strng]
+;;   (count (re-seq #"[a-z]" strng)))
+
+;; aliasing the set of funcs
+(def lowercase_count
+  #(->> (re-seq #"[a-z]" %) count))
 
 (re-seq #"[a-z]" "abcABC123def")
 
 (= (lowercase_count "abc") 3)
 (= (lowercase_count "abcABC123def") 6)
-;note that this had to remove an escape character because of clojure's string rules 
-(=(lowercase_count "abcABC123!@#$%^&*()_-+=}{[]|':;?/>.<,~") 3)
-(=(lowercase_count "") 0)
-;note that this had to remove an escape character because of clojure's string rules
+;note that this had to remove an escape character because of clojure's
+;string rules 
+(= (lowercase_count "abcABC123!@#$%^&*()_-+=}{[]|':;?/>.<,~") 3)
+(= (lowercase_count "") 0)
+;note that this had to remove an escape character because of clojure's
+;string rules
 (= (lowercase_count "ABC123!@#$%^&*()_-+=}{[]|':;?/>.<,~") 0)
 (= (lowercase_count "abcdefghijklmnopqrstuvwxyz") 26)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/544675c6f971f7399a000e79
+
+;; through Java methods
+;; (defn string-to-number [s]
+;;   (Integer/parseInt s))
+
+;; with read-string func
+;; (defn string-to-number [s]
+;;   (read-string s))
+
+;; previous methods in one func
+;; (defn string-to-number [s]
+;;   ((rand-nth [#(read-string %)
+;;               #(Integer/parseInt %)
+;;               #(parse-long %) ;; Codewars unable to resolve symbol
+;;               #(bigint %)
+;;               #(Integer/valueOf %)]) s))
+;;
+;; ;; with print funcs
+;; (defn string-to-number [s]
+;;   ((rand-nth [#(do (println "read-string") (read-string %))
+;;               #(do (println "Integer/parseInt") (Integer/parseInt %))
+;;               #(do (println "Long/parseLong") (Long/parseLong %))
+;;               #(do (println "biging") (bigint %))
+;;               #(do (println "Integer/valueOf") (Integer/valueOf %))]) s))
+
+;; works in IDE
+(def parser-options
+  [{:print-str "This is read-string"      :func #(read-string %)}
+   {:print-str "This is Integer/parseInt" :func #(Integer/parseInt %)}
+   {:print-str "This is Long/parseLong"   :func #(Long/parseLong %)}
+   {:print-str "This is bigint"           :func #(bigint %)}
+   {:print-str "This is Integer/valueOf"  :func #(Integer/valueOf %)}])
+
+(defn string-to-number [s]
+  (let [choice (rand-nth parser-options)]
+    (println (:print-str choice))
+    ((:func choice) s)))
+
+;; There is an extra solution in the comments
+;; (defn string-to-number [str]
+;;   (eval str))
+
+;; somehow this code passes the tests - from solutions
+;; really don't understand. Something is brokent, I think
+;; (defn s2n [s]
+;;   (count ()))
+;; (s2n "128")
+
+;; and this code is also from solutions
+;; (defn string-to-number [s]
+;;   (->
+;;     str))
+
+(int "124") ;; can't be executed
+(int \1)
+(int \1)
+(parse-long "1234")
+(println parser-options)
+(def xxx [{:a 1 :b 2 :c 3}])
+(def yyy {:a 2 :b 3})
+(println xxx)
+(println (xxx :a))
+(println (:b yyy))
+(println (yyy :b))
+(println (:c (rand-nth xxx)))
+
+(= (string-to-number "1234") 1234)
+(= (string-to-number "605") 605)
+(= (string-to-number "1405") 1405)
+(= (string-to-number "-7") -7)
+
