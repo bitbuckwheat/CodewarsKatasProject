@@ -657,3 +657,35 @@
 (= (grow [1 2 3]) 6)
 (= (grow [4 1 1 1 4]) 16)
 (= (grow [2 2 2 2 2 2]) 64)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/5933a1f8552bc2750a0000ed
+
+
+(defn nth-even [n] (- (* 2 n) 2))
+  ;; (if (= n 1)
+  ;;   0
+  ;;   (- (* 2 n) 2)))
+
+(= (nth-even 1) 0)
+(= (nth-even 2) 2)
+(= (nth-even 3) 4)
+(= (nth-even 100) 198)
+(= (nth-even 1298734) 2597466)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/56a946cd7bd95ccab2000055
+
+(defn lowercase_count[strng]
+  (count (re-seq #"[a-z]" strng)))
+
+(re-seq #"[a-z]" "abcABC123def")
+
+(= (lowercase_count "abc") 3)
+(= (lowercase_count "abcABC123def") 6)
+;note that this had to remove an escape character because of clojure's string rules 
+(=(lowercase_count "abcABC123!@#$%^&*()_-+=}{[]|':;?/>.<,~") 3)
+(=(lowercase_count "") 0)
+;note that this had to remove an escape character because of clojure's string rules
+(= (lowercase_count "ABC123!@#$%^&*()_-+=}{[]|':;?/>.<,~") 0)
+(= (lowercase_count "abcdefghijklmnopqrstuvwxyz") 26)
