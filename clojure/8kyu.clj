@@ -599,4 +599,61 @@
 (= (validate-word "abc!abc!"), true)
 (= (validate-word "abc!abc"), false)
 
+;; ==========================================================================
+;; https://www.codewars.com/kata/56f6ad906b88de513f000d96
 
+
+(defn bonus-time [salary bonus]
+  (let [cash (if bonus (* salary 10) salary)]
+    (str "$" cash)))
+
+;; and the shortest solution from comments
+;; (defn bonus-time [salary bonus]
+;;   (str "$" (* salary (if bonus 10 1))))
+
+;; and even shorter from comments
+;; (defn bonus-time [salary bonus]
+;;   (str \$ salary (when bonus \0)))
+
+;; and even shorter from me:)))
+;; (defn bonus-time [s b]
+;;   (str \$ s (when b \0)))
+
+
+(= (bonus-time 10000 true) "$100000")
+(= (bonus-time 25000 true) "$250000")
+(= (bonus-time 10000 false) "$10000")
+(= (bonus-time 60000 false) "$60000")
+(= (bonus-time 2 true) "$20")
+(= (bonus-time 78 false) "$78")
+(= (bonus-time 67890 true) "$678900")
+
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/57f780909f7e8e3183000078
+
+;; apply version
+;; (defn grow [xs]
+;;   (apply * xs))
+
+;; reduce version
+;; (defn grow [xs]
+;;   (reduce * xs))
+
+;; and def version 1
+;; (def grow
+;;   #(reduce * %))
+
+;; and def version 2
+;; (def grow
+;;   #(apply * %))
+
+;; and def version 3
+(def grow
+  (partial apply *))
+
+(apply * [1 2 3])
+
+(= (grow [1 2 3]) 6)
+(= (grow [4 1 1 1 4]) 16)
+(= (grow [2 2 2 2 2 2]) 64)
