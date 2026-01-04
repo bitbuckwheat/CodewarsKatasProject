@@ -160,9 +160,32 @@
 (def n [3])
 
 (defn create-lines [n]
-  (let [triangle {1 [1] 2 [1 1]}]
-    (assoc triangle n (cons))))
-(defn easy-line [n])
+  (loop [counter 2 tri {0 [1 0] 1 [1 1 0]}]
+    (if (> counter n)
+      (map #(*' % %) (get tri n))
+      (recur (+' 1 counter)
+             (assoc tri
+                    counter
+                    (loop [num 0 row [1]]
+                      (if (> num (-' counter 1))
+                        (conj row 0)
+                        (recur (+' 1 num)
+                               (conj row
+                                     (+
+                                       (nth (get tri (-' counter 1)) num)
+                                       (nth (get tri (-' counter 1)) (+' 1 num))))))))))))
+
+(defn easy-line [n]
+  (reduce +' (create-lines n)))
+
+(easy-line 50)
+(create-lines 4) ; {1 [1 0], 2 [1 1 0], 3 [1 2 1 0], 4 [1 3 3 1 0]}
+(create-lines 2) ; (1 16 25 4 0)
+(create-lines 5) ; {1 [1 0], 2 [1 1 0], 3 [1 2 1 0], 4 [1 3 3 1 0], 5 [1 4 6 4 1 0]}
+(create-lines 5) ; [1 4 6 4 1 0]
+(create-lines 7)
+(def trig {1 [1] 2 [1 1]})
+(nth (get trig 2) 0)
 
 (= (easy-line 7) 3432N)
 (= (easy-line 13) 10400600N)

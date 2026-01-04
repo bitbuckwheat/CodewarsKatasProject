@@ -792,8 +792,21 @@
                   "I\n")
              (inc counter)))))
 
+;; solution from CW with "iterate"
+;; (iterate f x)
+;; Returns a lazy (infinite!) sequence of x, (f x), (f (f x)) etc.
+;; f must be free of side-effects
+;; (defn draw-stairs [n]
+;;   (->> "I"
+;;        (iterate (partial str " "))
+;;        (take n)
+;;        (interpose "\n")
+;;        (apply str)))
+
 (draw-stairs 3) ; "I\n I\n  I\n"
 (repeat 4 " ")
 
 (= (draw-stairs 3) "I\n I\n  I")
 (= (draw-stairs 5) "I\n I\n  I\n   I\n    I")
+
+;; ==========================================================================
