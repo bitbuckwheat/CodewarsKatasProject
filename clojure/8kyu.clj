@@ -810,3 +810,40 @@
 (= (draw-stairs 5) "I\n I\n  I\n   I\n    I")
 
 ;; ==========================================================================
+;; https://www.codewars.com/kata/588417e576933b0ec9000045/
+
+
+(defn seats-in-theater
+  [n-cols n-rows col row]
+  (* (- n-cols (dec col))
+     (- n-rows row)))
+
+
+(= (seats-in-theater 16 11 5 3) 96)
+(= (seats-in-theater 1 1 1 1) 0)
+(= (seats-in-theater 13 6 8 3) 18)
+(= (seats-in-theater 60 100 60 1) 99)
+(= (seats-in-theater 1000 1000 1000 1000) 0)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/5f70c883e10f9e0001c89673/
+
+(defn flip [d a]
+  (if (= d \L)
+    (sort > a)
+    (sort a)))
+
+;; the shortest from solutions
+;; (defn flip [d a]
+;;   (sort (case d
+;;           \R <
+;;           \L >
+;;          a)))
+
+(= (flip \R [4 5 6 7 1]) [1 4 5 6 7])
+(= (flip \L [3 0 9 8 1 2]) [9 8 3 2 1 0])
+(= (flip \L [0 0 12 0 1]) [12 1 0 0 0])
+(= (flip \R [13 2 4 7 93]) [2 4 7 13 93])
+(= (flip \R [5 4 3 2 1]) [1 2 3 4 5])
+
+;; ==========================================================================
