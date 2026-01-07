@@ -212,3 +212,94 @@
 
 (def chairs (assoc {} (range 1 11) nil))
 (println chairs)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/5b94d7eb1d5ed297680000ca/
+
+
+;; for some reason my solution has been posted to the very top
+;; I don't know why, it doesn't look like the Best
+(defn solve [dirs]
+  (let [vectors (map #(clojure.string/split % #" ") dirs)
+        dir-change {"Right" "Left"
+                    "Left" "Right"}
+        sent-start (concat '("Begin") (reverse
+                                        (map #(get dir-change %)
+                                             (map #(first %)
+                                                  (rest vectors)))))
+        sent-end (map #(clojure.string/join " " %)
+                      (reverse (map #(rest %) vectors)))]
+    (vec (map #(str %1 " " %2) sent-start sent-end))))
+
+;; no, don't think it's easier
+;; (defn solve [dirs]
+;;   (let [vectors (reverse (map #(clojure.string/split % #" ") dirs))]
+;;     println vectors))
+
+
+    ;;     roads (case (count (first vectors))
+    ;;               3 (map last vectors)
+    ;;               4 (map #(take-last 2 %) vectors))
+    ;;     rs (map last vectors)
+    ;;     dir-change (zipmap rs (reverse rs))
+    ;;     ;; {:keys [rs] :vals [reverse rs]} rs
+    ;;     instrs {"Begin" "Begin"
+    ;;              "on" "on"
+    ;;              "Road" "Road"
+    ;;              "Right" "Left"
+    ;;              "Left" "Right"}
+    ;;     ins (map #(assoc instrs % nil) rs)]
+    ;; (println dir-change)
+    ;; ;; (println go)
+    ;; (println rs)
+    ;; (map #(assoc instrs % nil) rs)
+    ;; (map #(assoc instrs %1 %2) (reverse rs))
+    ;; (println vectors)
+    ;; (println roads)
+    ;; (println ins)))
+
+
+(def coll (map (comp char (partial + 65)) (range 26)))
+(println coll)
+(let [[?] coll]
+  ?)
+(let [[_ ?] coll]
+  ?)
+(def test "Begin on 3rd Blvd") ;;["Begin on 3rd Blvd" "Right on First Road" "Left on 9th Dr"]
+(clojure.string/split test #" ")
+(let [[?1 ?2 ?3] (clojure.string/split test #" ")]
+  [?1 ?2 ?3])
+(let [[?1 ?2 ?3] (clojure.string/split test #" ")]
+  ?1)
+(let [{:keys [?1]} (clojure.string/split test #" ")]
+  (?1))
+
+(def a ["A" "B"])
+(def b ["C" "D"])
+(let [{:keys a}]
+  println y)
+(def dirs ["first second" "third fourth"])
+(println dirs)
+(map #(clojure.string/split % #" ") dirs) ; (["first" "second"] ["third" "fourth"])
+(map #(clojure.string/split % #" ") ["first second" "third fourth"])
+
+(into {} a b)
+(hash-map a b)
+(apply hash-map a)
+(zipmap a b)
+
+(= (solve ["Begin on Road A"
+           "Right on Road B"
+           "Right on Road C"
+           "Left on Road D"])
+   ["Begin on Road D"
+    "Right on Road C"
+    "Left on Road B"
+    "Left on Road A"])
+(= (solve ["Begin on 3rd Blvd" "Right on First Road" "Left on 9th Dr"])
+   ["Begin on 9th Dr" "Right on First Road" "Left on 3rd Blvd"])
+(= (solve ["Begin on Road A"]) ["Begin on Road A"])
+(= (solve ["Begin on A" "Left on B" "Right on C" "Right on D" "Right on E"
+           "Left on F" "Right on G" "Right on H" "Left on I" "Left on J"])
+   ["Begin on J" "Right on I" "Right on H" "Left on G" "Left on F"
+    "Right on E" "Left on D" "Left on C" "Left on B" "Right on A"])
