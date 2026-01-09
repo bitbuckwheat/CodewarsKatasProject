@@ -414,3 +414,64 @@
 
 (clojure.test/test-vars [#'katas.7kyu/basic-tests])
 (run-tests 'katas.7kyu)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/526c7363236867513f0005ca
+
+;; and probably the shortest solution from comments
+  ;; (and (integer? (/ year 4)) 
+  ;;      (or (integer? (/ year 400)) 
+  ;;          (not (integer? (/ year 100))))))
+
+;; the third version
+(defn leap-year?
+  "Checks whether a given year is a leap year"
+  [year]
+  (defn p [n]
+    (zero? (rem year n)))
+  (cond
+    (p 400) true
+    (p 100) false
+    (p 4) true
+    :esle false))
+
+;; the second version
+  ;; (cond
+  ;;   (zero? (rem year 400)) true
+  ;;   (zero? (rem year 100)) false
+  ;;   (zero? (rem year 4)) true
+  ;;   :else false))
+
+;; the very first and naive solution
+  ;; (if (zero? (rem year 400))
+  ;;   true
+  ;;   (if (zero? (rem year 100))
+  ;;     false
+  ;;     (if (zero? (rem year 4))
+  ;;       true
+  ;;       false))))
+
+  ;; (cond
+  ;;   (or (zero? (rem year 4)) (zero? (rem year 400))) true
+  ;;   (zero? (rem year 100)) false))
+  ;; (if (zero? (rem year 4))
+  ;;   true))
+    ;; (not= 0 (rem year 4))) false
+
+(def year 2020)
+(leap-year? year)
+(rem year 400)
+(/ 2020 4.)
+
+
+(deftest example-test
+  (is (true? (leap-year? 2020)))
+  (is (true? (leap-year? 2000)))
+  (is (false? (leap-year? 2015)))
+  (is (false? (leap-year? 2100))))
+
+(clojure.test/test-vars [#'katas.7kyu/example-test])
+(run-tests 'katas.7kyu)
+
+;; ==========================================================================
+;;
