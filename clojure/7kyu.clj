@@ -355,3 +355,62 @@
 
 (clojure.test/test-vars [#'katas.7kyu/open-or-senior-example-test])
 (run-tests 'katas.7kyu)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/568ff914fc7a40a18500005c/
+
+(defn roundTo2 [n] (/ (Math/round (* n 100.0)) 100.0))
+
+(defn distances-from-average [arr]
+  (let [avg (float (/ (apply + arr) (count arr)))]
+    println avg
+    (map #(roundTo2 (- avg %)) arr)))
+
+;; from solutions. I liked combining 2 funcs within 1
+;; (defn distances-from-average [arr]
+  ;; (def m (float (/ (reduce + arr) (count arr))))
+  ;; (map #(/ (Math/round (* (- m %) 100)) 100.0) arr))
+
+(deftest a-test1
+  (is (= (distances-from-average [55, 95, 62, 36, 48])
+        [4.2, -35.8, -2.8, 23.2, 11.2]))
+  (is (= (distances-from-average [1, 1, 1, 1, 1])
+        [0.0, 0.0, 0.0, 0.0, 0.0]))
+  (is (= (distances-from-average [1, -1, 1, -1, 1, -1])
+        [-1.0, 1.0, -1.0, 1.0, -1.0, 1.0]))
+  (is (= (distances-from-average [1, -1, 1, -1, 1])
+        [-0.8, 1.2, -0.8, 1.2, -0.8]))
+  (is (= (distances-from-average [2, -2]) [-2.0, 2.0]))
+  (is (= (distances-from-average [123 -65 32432 -353 -534])
+        [6197.6 6385.6 -26111.4 6673.6 6854.6])))
+
+(clojure.test/test-vars [#'katas.7kyu/a-test1])
+(run-tests 'katas.7kyu)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/5a63948acadebff56f000018/
+
+(defn max-product [arr size]
+  ;; (->> arr (sort >) (take size) (apply *))
+  (->> arr (sort >) (take size) (reduce *)))
+
+(sort > [1 2 3])
+(def arr [1 2 3])
+(def size 2)
+(max-product arr size)
+
+
+(deftest basic-tests
+  (is (= (max-product [4 3 5] 2) 20))
+  (is (= (max-product [10 8 7 9] 3) 720))
+  (is (= (max-product [8 6 4 6] 3) 288))
+  (is (= (max-product [10 2 3 8 1 10 4] 5) 9600))
+  (is (= (max-product [13 12 -27 -302 25 37 133 155 -14] 5) 247895375))
+  (is (= (max-product [-4 -27 -15 -6 -1] 2) 4))
+  (is (= (max-product [-17 -8 -102 -309] 2) 136))
+  (is (= (max-product [10 3 -27 -1] 3) -30))
+  (is (= (max-product [14 29 -28 39 -16 -48] 4) -253344))
+  (is (= (max-product [1] 1) 1)))
+
+(clojure.test/test-vars [#'katas.7kyu/basic-tests])
+(run-tests 'katas.7kyu)
