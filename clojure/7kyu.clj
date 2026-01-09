@@ -1,6 +1,8 @@
 ;; 7th kyu katas
 
-(ns clojure.core)
+;; (ns clojure.core)
+(ns katas.7kyu
+  (:require [clojure.test :refer [test-vars run-tests deftest is]]))
 
 (def lst [1 9 13 1 99 9 9 13])
 
@@ -288,18 +290,68 @@
 (apply hash-map a)
 (zipmap a b)
 
-(= (solve ["Begin on Road A"
-           "Right on Road B"
-           "Right on Road C"
-           "Left on Road D"])
-   ["Begin on Road D"
-    "Right on Road C"
-    "Left on Road B"
-    "Left on Road A"])
-(= (solve ["Begin on 3rd Blvd" "Right on First Road" "Left on 9th Dr"])
-   ["Begin on 9th Dr" "Right on First Road" "Left on 3rd Blvd"])
-(= (solve ["Begin on Road A"]) ["Begin on Road A"])
-(= (solve ["Begin on A" "Left on B" "Right on C" "Right on D" "Right on E"
-           "Left on F" "Right on G" "Right on H" "Left on I" "Left on J"])
-   ["Begin on J" "Right on I" "Right on H" "Left on G" "Left on F"
-    "Right on E" "Left on D" "Left on C" "Left on B" "Right on A"])
+(deftest my-test
+  (is (= (solve ["Begin on Road A"
+                 "Right on Road B"
+                 "Right on Road C"
+                 "Left on Road D"])
+       ["Begin on Road D"
+        "Right on Road C"
+        "Left on Road B"
+        "Left on Road A"]))
+  (is (= (solve ["Begin on 3rd Blvd" "Right on First Road" "Left on 9th Dr"])
+        ["Begin on 9th Dr" "Right on First Road" "Left on 3rd Blvd"]))
+  (is (= (solve ["Begin on Road A"]) ["Begin on Road A"]))
+  (is (= (solve ["Begin on A" "Left on B" "Right on C"
+                 "Right on D" "Right on E"
+                 "Left on F" "Right on G"
+                 "Right on H" "Left on I"
+                 "Left on J"])
+        ["Begin on J" "Right on I" "Right on H" "Left on G" "Left on F"
+          "Right on E" "Left on D" "Left on C" "Left on B" "Right on A"])))
+
+(clojure.test/test-vars [#'my-test])
+(run-tests 'katas.7kyu)
+
+;; ==========================================================================
+;; writing tests with clojure.test
+
+(defn my-func [a b]
+  (+ a b))
+
+(deftest addition
+  (is (= 12 (my-func 7 5)))
+  (is (= 12 (my-func 7 5))))
+
+;; (run-tests 'katas.7kyu)
+(clojure.test/test-vars [#'katas.7kyu/addition])
+
+(run-tests 'katas.7kyu)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/5502c9e7b3216ec63c0001aa/
+
+
+
+(defn open-or-senior [data]
+  (map #(if (and (>= (first %) 55)
+                 (> (last %) 7))
+          "Senior"
+          "Open")
+       data))
+
+
+(deftest open-or-senior-example-test
+  (is (= (open-or-senior [[45 12] [55 21] [19 -2] [104 20]])
+         ["Open" "Senior" "Open" "Senior"]))
+  (is (= (open-or-senior [[3 12] [55 1] [91 -2] [54 23]])
+         ["Open" "Open" "Open" "Open"]))
+  (is (= (open-or-senior [[59 12] [55 -1] [12 -2] [12 12]])
+         ["Senior" "Open" "Open" "Open"]))
+  (is (= (open-or-senior [[74 10] [55 6] [12 -2] [68 7]])
+         ["Senior" "Open" "Open" "Open"]))
+  (is (= (open-or-senior [[16 23] [56 2] [56 8] [54 6]])
+         ["Open" "Open" "Senior" "Open"])))
+
+(clojure.test/test-vars [#'katas.7kyu/open-or-senior-example-test])
+(run-tests 'katas.7kyu)
