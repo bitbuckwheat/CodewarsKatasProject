@@ -474,4 +474,64 @@
 (run-tests 'katas.7kyu)
 
 ;; ==========================================================================
-;;
+;; https://www.codewars.com/kata/56ae72854d005c7447000023/
+
+(defn template [str-templ]
+  ;; (let [{:keys [name interests]} person]
+  ;;   (println string-template)
+  ;; (fn [person] (str (:name person) " "
+  ;;                 (second (clojure.string/split string-template #" "))
+  ;;                 " " (:interests person))))
+  ;; (fn [person]
+  ;;   (-> string-template
+  ;;       (clojure.string/replace #"\{\{\S+\}\}" "%s")
+  ;;       (#(apply format % (vals person)))))
+  (fn [^clojure.lang.IPersistentMap tags]
+    (->> (clojure.string/split str-templ #" ")
+        (map #(if (= (first %) \{)
+                ((keyword (clojure.string/replace % #"\{|\}" "")) tags)
+                %))
+        (clojure.string/join " "))))
+
+;; from sulutions, didn't get it at all(
+;; (defn template [s] 
+;;   (fn [m])
+;;  (clojure.string/replace s #"\{\{(\w+)\}\}"
+;;       #(str (get m (keyword (second %1))) "")))
+
+
+(def string-template "{{name}} likes {{interests}}")
+(def person (template string-template))
+(def p {:name "John" :interests "dogs"})
+(person "{{name}} likes {{interests}}")
+(person {:name "John" :interests "dogs"})
+
+(vals {:name "John" :interests "dogs"})
+
+(map #(if (= (first %) \{)
+        ((keyword (clojure.string/replace % #"\{|\}" "")) p)
+        %)
+     (clojure.string/split string-template #" "))
+
+(clojure.string/split string-template " ")
+
+(clojure.string/replace "{{name}} likes {{interests}}"
+                        #"\{\{name\}\}|\{\{interests\}\}"
+                        "%s")
+(clojure.string/replace "{{name}} likes {{interests}}"
+                        #"\{\{\S+\}\}"
+                        "%s")
+
+
+
+;; (deftest TemplateTest
+;;   (is (= (template "{{name}} likes {{interests}}")
+;;          "John likes dogs")))
+
+(deftest TemplateTest
+  (is (= ((template "{{name}} likes {{interests}}")
+          {:name "John" :interests "dogs"})
+         "John likes dogs")))
+
+(clojure.test/test-vars [#'katas.7kyu/TemplateTest])
+(run-tests 'katas.7kyu)
