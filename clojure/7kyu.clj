@@ -2,7 +2,7 @@
 
 ;; (ns clojure.core)
 (ns katas.7kyu
-  (:require [clojure.test :refer [test-vars run-tests deftest is]]))
+  (:require [clojure.test :refer [test-vars run-tests deftest is are]]))
 
 (def lst [1 9 13 1 99 9 9 13])
 
@@ -534,4 +534,77 @@
          "John likes dogs")))
 
 (clojure.test/test-vars [#'katas.7kyu/TemplateTest])
+(run-tests 'katas.7kyu)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/59727ff285281a44e3000011/
+
+;; could be "apply str" instead of "str... apply str"
+(defn generate-band-name [noun]
+  (let [c (clojure.string/capitalize noun)]
+    (if (= (first noun) (last noun))
+        (str c (apply str (rest noun)))
+        (str "The " c))))
+
+
+(deftest sample
+  (are [input expected] (= (generate-band-name input) expected)
+    "knife" "The Knife"
+    "tart" "Tartart"
+    "sandles" "Sandlesandles"
+    "bed" "The Bed"))
+
+(clojure.test/test-vars [#'katas.7kyu/sample])
+(run-tests 'katas.7kyu)
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/57f7796697d62fc93d0001b8
+
+;; all tests passed
+;; (defn trouble [xs t]
+;;   (loop [s (vec (rest xs)) res (vector (first xs))]
+;;     (if (= (count s) 0)
+;;         res
+;;         (if (= (+ (last res) (first s)) t)
+;;           (do
+;;             (println s res)
+;;             (recur (vec (rest s)) res))
+;;           (do
+;;             (println s res)
+;;             (recur (vec (rest s)) (conj res (first s))))))))
+
+;; with cond, worked out
+(defn trouble [xs t]
+  (loop [s (vec (rest xs)) acc (vector (first xs))]
+    (cond
+      (= s [])                       acc
+      (= (+ (last acc) (first s)) t) (recur (vec (rest s)) acc)
+      :else                          (recur (vec (rest s))
+                                            (conj acc (first s))))))
+
+;; with iterate, no, failed to come up with it
+;; (defn trouble [xs t]
+;;   (iterate #(if (= (+ (last res) (first s)) t))))
+
+(vector (first [1 2 3]))
+(count [])
+(def y [1])
+(count (drop-last y))
+(conj [1 2 3] 5)
+(last [1 2 3])
+(last [5])
+(count (rest [1]))
+(vec (rest [1 2 3]))
+(vector (first [1 2 3]))
+(conj [1 2 3] (vector (first [1 2 3])))
+(subvec [1 2 3] 0 1)
+(subvec [1 2 3] 1) 
+
+
+(deftest trouble-tests
+  (is (= (trouble [1 3 5 6 7 4 3] 7)  [1 3 5 6 7 4]))
+  (is (= (trouble [4 1 1 1 4] 2)  [4 1 4]))
+  (is (= (trouble [2 2 2 2 2 2] 4)  [2])))
+
+(clojure.test/test-vars [#'katas.7kyu/trouble-tests])
 (run-tests 'katas.7kyu)
