@@ -582,6 +582,8 @@
       :else                          (recur (vec (rest s))
                                             (conj acc (first s))))))
 
+;; and I could use reduce!
+
 ;; with iterate, no, failed to come up with it
 ;; (defn trouble [xs t]
 ;;   (iterate #(if (= (+ (last res) (first s)) t))))
@@ -599,12 +601,22 @@
 (conj [1 2 3] (vector (first [1 2 3])))
 (subvec [1 2 3] 0 1)
 (subvec [1 2 3] 1) 
+(rest [1 2 3])
+([(rest [1 2 3 4])])
+(first [1 2 3])
+([(first [1 2 3])])
 
+
+;; (deftest trouble-tests
+;;   (is (= (trouble [1 3 5 6 7 4 3] 7)  [1 3 5 6 7 4]))
+;;   (is (= (trouble [4 1 1 1 4] 2)  [4 1 4]))
+;;   (is (= (trouble [2 2 2 2 2 2] 4)  [2])))
 
 (deftest trouble-tests
-  (is (= (trouble [1 3 5 6 7 4 3] 7)  [1 3 5 6 7 4]))
-  (is (= (trouble [4 1 1 1 4] 2)  [4 1 4]))
-  (is (= (trouble [2 2 2 2 2 2] 4)  [2])))
+  (are [input1 input2 expected] (= (trouble input1 input2) expected)
+    [1 3 5 6 7 4 3] 7 [1 3 5 6 7 4]
+    [4 1 1 1 4] 2 [4 1 4]
+    [2 2 2 2 2 2] 4 [2]))
 
 (clojure.test/test-vars [#'katas.7kyu/trouble-tests])
 (run-tests 'katas.7kyu)
