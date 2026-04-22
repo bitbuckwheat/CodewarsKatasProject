@@ -2,7 +2,8 @@
 
 ;; (ns clojure.core)
 (ns katas.7kyu
-  (:require [clojure.test :refer [test-vars run-tests deftest is are]]))
+  (:require [clojure.test :refer [test-vars run-tests deftest is are]]
+            [cheshire.core :as json]))
 
 (def lst [1 9 13 1 99 9 9 13])
 
@@ -620,3 +621,164 @@
 
 (clojure.test/test-vars [#'katas.7kyu/trouble-tests])
 (run-tests 'katas.7kyu)
+
+;; ==========================================================================
+;;
+
+(add-tap println)
+(tap> "Hello")
+(println "hello")
+(defn f []
+  (println "first")
+  (println "second"))
+(f)
+(*ns*)
+
+
+
+
+;; ==========================================================================
+
+(defn vert-mirror [strng]
+  (let [c (count (take-while #(not= % \newline) strng))
+        s (partition c (+ 1 c) strng)]
+    (apply str (interpose "\n" (map #(apply str %) (map #(reverse %) s))))))
+
+(def strng "lVHt\nJVhv\nCSbg\nyeCt"
+  (let [c (count (take-while #(not= % \newline) "asd\nasd"))
+        s (partition 4 5 strng)]
+    (apply str (interpose "\n" (map #(appl str %) (map #(reverse %) s))))))
+    
+;; (defn hor-mirror [strng]
+;;   (->> strng
+;;      (map #(apply str %))
+;;      reverse
+;;      (interpose "\n")
+;;      (apply str)))
+;;
+(defn hor-mirror [strng]
+  (let [c (count (take-while #(not= % \newline) strng))
+        s (partition c (+ 1 c) strng)]
+    (apply str (interpose "\n" (reverse (map #(apply str %) s))))))
+
+(hor-mirror strng)
+
+(defn oper [fct s]
+  (fct s))
+
+(count "asd\nasd")
+(take-while #(not= % \newline) "asd\nasd")
+(partition 4 6 "lVHt\nJVhv\nCSbg\nyeCt")
+(def p ; ((\l \V \H \t) (\J \V \h \v) (\C \S \b \g) (\y \e \C \t))
+  (partition 4 5 "lVHt\nJVhv\nCSbg\nyeCt"))
+(apply str (interpose "\n" (reverse (map #(apply str %) p))))
+(apply str '(\l \V \H \t)) ; "lVHt"
+(map #(apply str))
+
+(deftest opstrings
+  (are [func input expected] (= (oper func input) expected)
+    vert-mirror
+    "hSgdHQ\nHnDMao\nClNNxX\niRvxxH\nbqTVvA\nwvSyRu" "QHdgSh\noaMDnH\nXxNNlC\nHxxvRi\nAvVTqb\nuRySvw"
+    hor-mirror "lVHt\nJVhv\nCSbg\nyeCt" "yeCt\nCSbg\nJVhv\nlVHt"))
+
+;; optimized version - works
+(defn vert-mirror [s]
+  (let [c (count (take-while #(not= % \newline) s))
+        p (partition c (inc c) s)]
+    (apply str (interpose "\n" (map #(apply str %) (map #(reverse %) p))))))
+
+(defn hor-mirror [s]
+  (let [c (count (take-while #(not= % \newline) s))
+        p (partition c (inc c) s)]
+    (apply str (interpose "\n" (reverse (map #(apply str %) p))))))
+
+(defn oper [fct s]
+  (fct s))
+
+
+;; optimized version 2 - works
+(defn vert-mirror [s]
+  (let [c (count (take-while #(not= % \newline) s))
+        p (partition c (inc c) s)]
+    (->> p
+         (map #(reverse %))
+         (map #(apply str %))
+         (interpose "\n")
+         (apply str))))
+
+(defn hor-mirror [s]
+  (let [c (count (take-while #(not= % \newline) s))
+        p (partition c (inc c) s)]
+    (->> p
+         (map #(apply str %))
+         reverse
+         (interpose "\n")
+         (apply str))))
+
+(defn oper [fct s]
+  (fct s))
+
+
+(map #(apply str (reverse %)) ["Clojure" "is" "awesome!"])
+(reverse ["Clojure" "is" "awesome!"])
+
+;; optimized version 3 - works
+
+(ns opstrings.core)
+(require '[clojure.string :as str])
+
+(defn vert-mirror [s]
+    (->> (str/split s #"\n")
+         (map #(reverse %))
+         (map #(apply str %))))
+
+(defn hor-mirror [s]
+    (->> (str/split s #"\n")
+         reverse))
+
+(defn oper [fct s]
+  (str/join "\n" (fct s)))
+
+;; optimized version - the shortest one and working
+
+(ns opstrings.core)
+(require '[clojure.string :as str])
+
+(defn vert-mirror [s]
+    (->> (str/split s #"\n")
+         (map #(str/reverse %))))
+
+(defn hor-mirror [s]
+    (->> (str/split s #"\n")
+         reverse))
+
+(defn oper [fct s]
+  (str/join "\n" (fct s)))
+
+
+
+;; ==========================================================================
+;; https://www.codewars.com/kata/550554fd08b86f84fe000a58/train/clojure
+
+;; (ns which-are-in.core)
+
+(defn in-array [array1 array2]
+  ;; (map #(filter str/includes? % array1) array2))
+  ;; (map (map #(str/includes? %1 %2) array1) array2))
+  ;; (map #() array1))
+  (sort (vec (set (filter #(not (= % nil)) (for [x2 array1
+                                                 x1 array2]
+                                            (when (str/includes? x1 x2)
+                                                x2)))))))
+
+(str/includes? "holp" "olp")
+(in-array ["olp" "love" "string"]
+          ["ulove" "alove" "holp" "sholp","vfmstring"])
+
+(deftest a-test1
+  (testing "Test 1"
+    (def ur ["olp" "love" "string"])
+    (def vr ["ulove" "alove" "holp" "sholp","vfmstring"])
+    (def rr ["love" "olp" "string"])
+    (is (= (in-array ur vr) rr))))
+
