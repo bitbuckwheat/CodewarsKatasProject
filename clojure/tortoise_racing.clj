@@ -1,3 +1,5 @@
+;; https://www.codewars.com/kata/55e2adece53b4cdcb900006c/
+
 (ns tortoise.core
   (:require [clojure.test :refer :all]
             [clojure.math :as math]))
@@ -77,4 +79,21 @@
    (is (= (race 720 850 70) [0 32 18]))
    (is (= (race 80 91 37) [3 21 49]))
    (is (= (race 80 100 40) [2 0 0]))))
+
+;; ai reduce solution
+;;
+;; (defn race [v1 v2 g]
+;;   (if (> v1 v2)
+;;     nil
+;;     (let [total-sec (quot (* g 3600) (- v2 v1))]
+;;
+;;       ;; Запускаем reduce по списку делителей
+;;       (:result
+;;        (reduce (fn [acc divisor]
+;;                  (let [current-sec (:current acc)]
+;;                    {:result  (conj (:result acc) (quot current-sec divisor))
+;;                     :current (rem current-sec divisor)}))
+;;                {:result [] :current total-sec} ; Начальное состояние
+;;                [3600 60 1])))))                ; Список делителей
+
 
