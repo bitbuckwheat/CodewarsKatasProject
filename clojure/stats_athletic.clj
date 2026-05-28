@@ -8,14 +8,18 @@
 (def stat1 "01|15|59, 1|47|16, 01|17|20, 1|32|34, 2|17|17")
 
 (defn stat [strg]
-  (let [st (sort (map (fn [[h m s]] (reduce + (map #(* %1 %2)
-                                                [3600 60 1]
-                                                (map #(Integer/parseInt %) [h m s]))))
-                   (map #(str/split % #"\|") (str/split strg #", "))))
-        r (convert (- (last st) (first st)))
-        a (convert (int (/ (reduce + st) (count st))))
-        m (convert (nth st 2))]
-    (str "Range: " r " Average: " a " Median: " m)))
+  (if (= "" strg)
+    ""
+    (let [st (sort (map (fn [[h m s]]
+                            (reduce + (map #(* %1 %2)
+                                        [3600 60 1]
+                                        (map #(Integer/parseInt %) [h m s]))))
+                        (map #(str/split % #"\|") (str/split strg #", "))))
+          r (convert (- (last st) (first st)))
+          a (convert (quot (reduce + st) (count st)))
+          ;; m (convert (nth st 2))
+          m (convert (get_median st))]
+      (str "Range: " r " Average: " a " Median: " m))))
 
 (apply * [2 3 4]) ; 24
 ;; (* [2 3 4])
@@ -25,6 +29,17 @@
                                                    (quot (rem secs 3600) 60)
                                                    (rem (rem secs 3600) 60)])))
 (convert 3678)
+
+(defn get_median [st]
+  (println (map #(convert %) st))
+  (if (even? (count st))
+    (quot
+      (+ (nth st (- (quot (count st) 2) 1))
+         (nth st (quot (count st) 2)))
+      2)
+    (nth st (quot (count st) 2))))
+    ;; (/ (nth st (+ 1 (quot (count st) 2)))
+    ;;    (nth st (+ 2 (quot (count st) 2))))))
 
 
 (deftest a-test1
