@@ -14,7 +14,7 @@
 ;;                                       (map #(str/split % #" (?=[A-Z]{2} \d{5})") (str/split ad #","))))))))
 
 (defn travel [s zipcode]
-  (if (= nil (re-find (re-pattern (str zipcode ",")) s))
+  (if (or (= nil (re-find (re-pattern (str zipcode ",")) s)) (= zipcode ""))
     (str zipcode ":/")
     (let [numbers-addresses
           (map #(str/join "," %)
