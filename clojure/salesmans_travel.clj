@@ -19,10 +19,10 @@
     (let [numbers-addresses
           (map #(str/join "," %)
                (apply map vector
-                          (map (fn [[house address code]] [house address])
-                               (filter (fn [[house address code]] (= zipcode code))
+                          (map (fn [[house address _]] [house address])
+                               (filter (fn [[_ _ code]] (= zipcode code))
                                        (map #(str/split % #"(?<=\A\d+)\s+|\s+(?=[A-Z]{2}\s+\d{5})")
-                                        (str/split ad #","))))))]
+                                        (str/split s #","))))))]
       (str zipcode
            ":"
            (last numbers-addresses)

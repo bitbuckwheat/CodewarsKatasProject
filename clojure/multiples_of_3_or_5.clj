@@ -43,6 +43,48 @@
 (def words "Hey fellow warriors")
 (spin-words words)
 
-"Hey fellow warriors"  --> "Hey wollef sroirraw" 
-"This is a test        --> "This is a test") 
-"This is another test" --> "This is rehtona test"
+;; "Hey fellow warriors"  --> "Hey wollef sroirraw" 
+;; "This is a test        --> "This is a test") 
+;; "This is another test" --> "This is rehtona test"
+
+
+
+
+;; https://www.codewars.com/kata/523f5d21c841566fde000009
+;;
+
+;; (defn array-diff [a b]
+;;   (apply vector (for [x a
+;;                       y b
+;;                       :when (not= x y)]
+;;                   x))
+
+(defn not-contains [])
+
+;; (defn array-diff [a b]
+;;   (filter (fn [i] (filter (fn [j] (not= i j)) a)) b))
+
+(defn array-diff [a b]
+  (vector (filter (fn [number] (not (in number b))) a)))
+
+(def a [1 2 3])
+(def b [1 2])
+(contains? [1 2 3] 0)
+(not (contains? [1 2 3] 2))
+(not true)
+
+(defn in [n b]
+  (not (empty? (filter #(= n %) b))))
+
+(in 2 b)
+
+
+(array-diff a b)
+
+(deftest example-tests
+  (is (= (array-diff [1 2] [1]) [2]))
+  (is (= (array-diff [1 2 2] [1]) [2 2]))
+  (is (= (array-diff [1 2 2] [2]) [1]))
+  (is (= (array-diff [1 2 2] []) [1 2 2]))
+  (is (= (array-diff [1 2 3] [1 2]) [3]))
+  (is (= (array-diff [] [1 2]) [])))
