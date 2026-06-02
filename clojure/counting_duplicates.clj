@@ -28,3 +28,32 @@
     (is (= 2 (duplicate-count "aabBcde"))))
   (testing "Indivisibility"
     (is (= 1 (duplicate-count "Indivisibility")))))
+
+
+
+;; https://www.codewars.com/kata/54e6533c92449cc251001667
+;; Unique In Order
+
+(def x "ABC")
+(def y "AABCC")
+(def z [1 2 2 3])
+(defn unique-in-order [input]
+  (println input)
+  ;; peek instead of last is much faster for large vectors
+  (reduce (fn [acc i] (if (not= i (last acc))
+                        (conj acc i)
+                        acc)) [] input))
+
+(unique-in-order x)
+(unique-in-order y)
+(unique-in-order z)
+
+
+;; but the shortest solutions are
+;; Returns a lazy sequence removing consecutive duplicates in coll.
+;; Returns a transducer when no collection is provided.
+;;
+;; (defn unique-in-order [input]
+  ;; (dedupe input))
+;;
+;; (def unique-in-order dedupe)
