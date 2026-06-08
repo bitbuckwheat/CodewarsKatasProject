@@ -5,12 +5,50 @@
 (require '[clojure.string :as str])
 (require '[clojure.test :refer :all])
 
+;; (defn revrot [strng sz]
+;;   (cond
+;;     (or (>= 0 sz)
+;;         (empty? strng)
+;;         (> sz (count strng))) ""
+;;     :else (apply str (map #(reduce str %)
+;;                           (map #(if (= 0 (rem (reduce + %) 2))
+;;                                   (vec (reverse %))
+;;                                   (conj (vec (rest %)) (first %)))
+;;                                (partition sz (map #(Integer/parseInt %)
+;;                                                   (str/split strng #""))))))))
+
 (defn revrot [strng sz]
-  (map (fn [l] (reduce (fn [d] (Integer. d)) l)) (partition sz strng)))
+  (cond
+    (or (>= 0 sz)
+        (empty? strng)
+        (> sz (count strng))) ""
+    :else (->>
+            (str/split strng #"")
+            (map #(Integer/parseInt %))
+            (partition sz)
+            (map #(if (even? (reduce + %))
+                      (vec (reverse %))
+                      (conj (vec (rest %)) (first %))))
+            flatten
+            (str/join ""))))
+            ;; (map #(reduce str %))
+            ;; (apply str))))
 
 (def s "1234569876541")
 (def z 6)
 (revrot s z)
+(Integer/parseInt \1)
+(Integer. \1)
+(map #(Integer/parseInt %) (str/split "123" #""))
+(partition z (map #(Integer/parseInt %) (str/split s #"")))
+(map #(reduce + %) (partition z (map #(Integer/parseInt %) (str/split s #""))))
+(conj [1 2 3] 4) ; [1 2 3 4]
+(first [1 2 3])
+
+(conj (vec (rest '(1 2 3))) (first '(1 2 3)))
+(vec (rest '(1 2 3)))
+
+(rem 308 2)
 
 
 
