@@ -17,14 +17,12 @@
 
 ;; second version, a bit simpler, no if and no map acc as well
 (defn count-smileys [arr]
-  (if (empty? arr)
-    0
-    (:c (reduce (fn [acc smile]
-                    (if (re-find #"[:;][-~]?[)D]" smile)
-                        (assoc acc :c (inc (get acc :c)))
-                        acc))
-                {:c 0}
-                arr))))
+  (reduce (fn [acc smile]
+              (if (re-find #"[:;][-~]?[)D]" smile)
+                  (assoc acc :c (inc (get acc :c)))
+                  acc))
+          0
+          arr))
 
 
 (deftest example-teste
