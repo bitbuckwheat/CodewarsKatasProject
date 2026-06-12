@@ -31,6 +31,38 @@
         (recur (butlast acc) (rest s))
         (recur (concat acc (list (first s))) (rest s))))))
 
+
+(let [res (reduce (fn [acc s] (if (or
+                                   (and (= (last acc) "NORTH") (= s "SOUTH"))
+                                   (and (= (last acc) "SOUTH") (= s "NORTH"))
+                                   (and (= (last acc) "WEST") (= s "EAST"))
+                                   (and (= (last acc) "EAST") (= s "WEST")))
+                               (pop acc)
+                               (conj acc s)))
+                 []
+                 arr)]
+  (if (not (empty? res))
+    res))
+
+(defn dirReduc [arr]
+  (let [opposites {"NORTH" "SOUTH"
+                   "SOUTH" "NORTH"
+                   "WEST" "EAST"
+                   "EAST" "WEST"}
+        res (reduce
+              (fn [acc move]
+                  (if (= (last acc) (opposites move))
+                    (pop acc)
+                    (conj acc move)))
+                []
+                arr)]
+    (if (not (empty? res))
+      res)))
+
+(when [2]
+  1)
+
+(conj nil "s" "t")
 (def arr ["NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"])
 (partition 2 2 nil arr)
 (dirReduc arr)
